@@ -1,0 +1,27 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: '/'
+    app_build_command: 'npm install & npm run build'
+    output_location: 'dist'
+    skip_api_build: true
+    build_timeout_in_minutes: 15
+    azure_static_web_apps_api_token: 'afc41d197de5b55412b4b4f141b256b6497d31acab42e01be7f8a64c722585ee2-e1413a03-5423-41d7-a5ab-7490c3feb839010148848'
+    deployment_environment: 'dev'
+    production_branch: 'main'
